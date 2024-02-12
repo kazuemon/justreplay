@@ -1,30 +1,30 @@
-# React + TypeScript + Vite
+# JustReplay
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![](thumbnail.png)
 
-Currently, two official plugins are available:
+<p align="center">
+OBS の Replay Buffer をいい感じにコントロールするツール <br />
+A tool to control Replay Buffer in OBS Studio conveniently
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+> [!IMPORTANT]
+> このツールは現在開発中です  
+> This tool is currently under development
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Motivation
 
-- Configure the top-level `parserOptions` property like this:
+- I want to use OBS's Replay Buffer to play only the decisive moments (highlights) of a game match :punch:
+- But with just the built-in features, I can only play all recorded or seek manually :cry:
+- I want to put pins on the highlights and play back only those parts later :pleading_face:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## How To Use
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Connect with OBS
+1. Start recording replay buffer
+1. Press the button at the highlight
+1. Stop recording replay buffer
+1. Replay only the highlights without editing :sparkles:
+
+
