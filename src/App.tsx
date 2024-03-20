@@ -37,6 +37,7 @@ import { parseMsTohhmmssSSS } from "./lib/time";
 import { UIWindow } from "./components/UIWindow";
 import { ProgramMonitor } from "./components/ProgramMonitor";
 import { Editor } from "./components/Editor";
+import { OBSWebSocketError } from "obs-websocket-js";
 
 const logger = consola.withTag("app");
 logger.level = 5;
@@ -62,7 +63,46 @@ const App = () => {
 	const [playQueue, setPlayQueue] = useState<PlayQueueItem[]>([]);
 
 	const onConnectButton = async () => {
-		await client.connect(`ws://${host}`, password);
+		try {
+			await client.connect(`ws://${host}`, password);
+			toast({
+				title: "OBS との接続が完了しました",
+				status: "success",
+				isClosable: true,
+			});
+		} catch (e) {
+			if (e instanceof OBSWebSocketError) {
+				let errorReason = "";
+				switch (e.code) {
+					case 4009:
+						if (e.message === "Authentication failed.") {
+							errorReason = "認証情報が正しくありません";
+						} else if (
+							e.message ===
+							"Your payload's data is missing an `authentication` string, however authentication is required."
+						) {
+							errorReason = "認証情報が入力されていない可能性があります";
+						} else {
+							errorReason = "認証に失敗しました";
+						}
+						break;
+				}
+				toast({
+					title: "接続に失敗しました",
+					description: errorReason,
+					status: "error",
+					isClosable: true,
+				});
+				logger.error("ConnectError", e.code, e.message);
+			} else {
+				toast({
+					title: "接続に失敗しました",
+					description: "不明なエラーです。コンソールを確認してください。",
+					status: "error",
+				});
+				logger.error("ConnectError", "UnknownError", e);
+			}
+		}
 	};
 
 	const onClickSetReplayButton = async (replay: Replay) => {

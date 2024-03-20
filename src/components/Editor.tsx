@@ -1,14 +1,30 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { replayDirectoryHandleAtom } from "../lib/atom/replay-directory-handle";
 import { DirHandlePicker, type DirHandlePickerRef } from "./DirHandlePicker";
+import ReactPlayer from "react-player";
 
 type EditorProps = {};
 
 export const Editor = (props: EditorProps) => {
 	const dirHandlePickerRef = useRef<DirHandlePickerRef>(null);
 	const replayDirectoryHandle = useAtomValue(replayDirectoryHandleAtom);
+
+	const [fileBlobUrl, setFileBlobUrl] = useState("");
+
+	const [fileUrl, setFileUrl] = useState("");
+
+	useEffect(() => {
+		(async () => {
+			if (!replayDirectoryHandle || !fileUrl) return;
+			const splitPath = fileUrl.split("/");
+			const fileName = splitPath[splitPath.length - 1];
+			const fileHandle = await replayDirectoryHandle.getFileHandle(fileName);
+			const fileObj = await fileHandle.getFile();
+			setFileBlobUrl(URL.createObjectURL(fileObj));
+		})();
+	}, [fileUrl, replayDirectoryHandle]);
 
 	return (
 		<>
@@ -24,7 +40,7 @@ export const Editor = (props: EditorProps) => {
 				gap={4}
 			>
 				{replayDirectoryHandle ? (
-					<Text>未実装</Text>
+					<ReactPlayer width="100%" height="100%" url={fileBlobUrl} />
 				) : (
 					<>
 						<Text textAlign="center">
