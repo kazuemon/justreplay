@@ -132,7 +132,7 @@ export const Recorder = ({ client, config, onRecorded }: RecorderProps) => {
 		setRecordLimitMs(null);
 		setUnsavedLaps(laps);
 		setLaps([]);
-		// await client.call("SaveReplayBuffer");
+		await client.call("SaveReplayBuffer");
 	};
 
 	const onSavedReplay = async (e: OBSEventTypes["ReplayBufferSaved"]) => {
